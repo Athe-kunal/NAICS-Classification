@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 gliner = "^0.2.7"
+chromadb = "^0.5.3"
 
 
 [build-system]
