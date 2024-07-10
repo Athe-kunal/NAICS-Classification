@@ -1,0 +1,3 @@
+GLINER:
+  MODEL_NAME: "urchade/gliner_mediumv2.1"
+  LABELS: ["Industry","sector"]
