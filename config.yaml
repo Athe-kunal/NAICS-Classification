@@ -9,6 +9,4 @@ VECTORDB:
   DATABASE_PATH: "NAICS-DB"
   COLLECTION_NAME: "naics_collection"
   EMBEDDING_MODEL: "all-MiniLM-L6-v2"
-  #can be either "sentence_transformer" or "openai" See the list here https://docs.trychroma.com/guides/embeddings 
-  EMBEDDING_MODEL_TYPE: "sentence_transformer" 
-
+  EMBEDDING_MODEL_TYPE: "sentence_transformer" #can be either "sentence_transformer" or "openai" See the list here https://docs.trychroma.com/guides/embeddings 
