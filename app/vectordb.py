@@ -57,7 +57,7 @@ def _get_docs_metadata() -> tuple[list[str], list[str]]:
     return docs, metadata
 
 
-def _get_embedding_fn() -> (
+def get_embedding_fn() -> (
     Union[SentenceTransformerEmbeddingFunction, OpenAIEmbeddingFunction]
 ):
     """Returns the embedding function based on the configuration parameters
@@ -88,7 +88,7 @@ def build_database():
     naics_docs, naics_metadata = _get_docs_metadata()
 
     client = chromadb.PersistentClient(path=config_params["VECTORDB"]["DATABASE_PATH"])
-    emb_fn = _get_embedding_fn()
+    emb_fn = get_embedding_fn()
     naics_collection = client.create_collection(
         name=config_params["VECTORDB"]["COLLECTION_NAME"], embedding_function=emb_fn
     )
@@ -103,7 +103,7 @@ def build_database():
 
 def load_database():
     client = chromadb.PersistentClient(path=config_params["VECTORDB"]["DATABASE_PATH"])
-    emb_fn = _get_embedding_fn()
+    emb_fn = get_embedding_fn()
     return client.get_collection(
         name=config_params["VECTORDB"]["COLLECTION_NAME"], embedding_function=emb_fn
     )

@@ -7,3 +7,10 @@ class QueryVectorDatabase(ABC):
     
     def query(self,query_embeddings:list[float],num_returns:int):
         pass
+
+class PredictionAbstract(ABC):
+    def __init__(self,naics_collection:Collection):
+        pass
+
+    def pipeline(self,question:str):
+        pass
