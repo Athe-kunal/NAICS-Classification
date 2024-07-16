@@ -35,7 +35,7 @@ def get_entities(gliner_model, question: str, threshold: float = 0.2):
         threshold (float, optional): threshold for considering a phrase as NER. Defaults to 0.2.
     """
     entities = gliner_model.predict_entities(
-        question, config_params["GLINER"]["MODEL_NAME"], threshold=threshold
+        question, config_params["GLINER"]["LABELS"], threshold=threshold
     )
     logging.info(f"Question: {question}\n Entities: {entities}")
     return entities

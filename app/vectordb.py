@@ -74,13 +74,13 @@ def get_embedding_fn() -> (
     if embedding_model_type == "sentence_transformer":
         device = "cuda" if torch.cuda.is_available() else "cpu"
         return SentenceTransformerEmbeddingFunction(
-            model_name=config_params["VECTORDB"]["MODEL_NAME"], device=device
+            model_name=config_params["VECTORDB"]["EMBEDDING_MODEL_NAME"], device=device
         )
     elif embedding_model_type == "openai":
         _ = load_dotenv(find_dotenv(), override=True)
         return OpenAIEmbeddingFunction(
             api_key=os.environ["OPENAI_API_KEY"],
-            model_name=config_params["VECTORDB"]["MODEL_NAME"],
+            model_name=config_params["VECTORDB"]["EMBEDDING_MODEL_NAME"],
         )
 
 
@@ -90,7 +90,10 @@ def build_database():
     client = chromadb.PersistentClient(path=config_params["VECTORDB"]["DATABASE_PATH"])
     emb_fn = get_embedding_fn()
     naics_collection = client.create_collection(
-        name=config_params["VECTORDB"]["COLLECTION_NAME"], embedding_function=emb_fn
+        name=config_params["VECTORDB"]["COLLECTION_NAME"]
+        + "-"
+        + config_params["VECTORDB"]["EMBEDDING_MODEL_TYPE"],
+        embedding_function=emb_fn,
     )
     naics_collection.add(
         documents=naics_docs,

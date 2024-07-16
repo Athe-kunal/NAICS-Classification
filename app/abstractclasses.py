@@ -1,16 +1,18 @@
 from abc import ABC, ABCMeta
 from chromadb.api.models import Collection
 
+
 class QueryVectorDatabase(ABC):
-    def __init__(self,naics_collection:Collection):
+    def __init__(self, naics_collection: Collection):
         self.naics_collection = naics_collection
-    
-    def query(self,query_embeddings:list[float],num_returns:int):
+
+    def query(self, query_embeddings: list[float], num_returns: int):
         pass
+
 
 class PredictionAbstract(ABC):
-    def __init__(self,naics_collection:Collection):
+    def __init__(self, naics_collection: Collection):
         pass
 
-    def pipeline(self,question:str):
+    def pipeline(self, question: str):
         pass
