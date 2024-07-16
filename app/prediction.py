@@ -18,7 +18,7 @@ class Prediction(PredictionAbstract):
         self,
         query_embeddings: list[list[float]],
         parent_or_child: Literal["parent", "child"],
-        parent_names: list = [],
+        parent_name: str = "",
     ):
 
         if parent_or_child == "parent":
@@ -29,12 +29,15 @@ class Prediction(PredictionAbstract):
             return relevant_docs
 
         elif parent_or_child == "child":
+            assert (
+                parent_name!= ""
+            ), "Parent name is required for querying child documents"
             relevant_docs = self.naics_collection.query(
                 query_embeddings=query_embeddings,
                 where={
                     "$and": [
                         {"TYPE": {"$eq": "CHILD"}},
-                        {"metadata_field": {"$in": parent_names}},
+                        {"metadata_field": {"$eq": parent_name}},
                     ]
                 },
                 n_results=1,
@@ -52,4 +55,5 @@ class Prediction(PredictionAbstract):
         query_texts = [entity["text"] for entity in entities]
         query_embeddings = self.emb_fn(query_texts)
 
-        return query_embeddings
+        parent_relevant_docs = self.query_database(query_embeddings,"parent")
+        return parent_relevant_docs

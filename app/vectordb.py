@@ -11,6 +11,9 @@ from chromadb.utils.embedding_functions import (
     OpenAIEmbeddingFunction,
     SentenceTransformerEmbeddingFunction,
 )
+from dotenv import load_dotenv,find_dotenv
+
+_ = load_dotenv(find_dotenv(),override=True)
 
 with open("config.yaml") as stream:
     try:
@@ -35,21 +38,23 @@ def _get_docs_metadata() -> tuple[list[str], list[str]]:
 
     for nids in naics_ids:
         parent_name = nids["parent_industry_name"]
-        docs.append(parent_name)
+        docs.append(nids["parent_industry_desc"])
         metadata.append(
             {
                 "NAICS CODE": nids["parent_code"],
+                "PARENT NAME": parent_name,
                 "DESCRIPTION": nids["parent_industry_desc"],
                 "TYPE": "PARENT",
             }
         )
 
         for child_naics in nids["child_naics_dict"]:
-            docs.append(child_naics["child_industry_name"])
+            docs.append(child_naics["child_description"])
             metadata.append(
                 {
                     "NAICS CODE": ", ".join(child_naics["child_code"]),
                     "DESCRIPTION": child_naics["child_description"],
+                    "CHILD NAME": child_naics["child_industry_name"],
                     "TYPE": "CHILD",
                     "PARENT": parent_name,
                 }
@@ -108,5 +113,7 @@ def load_database():
     client = chromadb.PersistentClient(path=config_params["VECTORDB"]["DATABASE_PATH"])
     emb_fn = get_embedding_fn()
     return client.get_collection(
-        name=config_params["VECTORDB"]["COLLECTION_NAME"], embedding_function=emb_fn
+        name=config_params["VECTORDB"]["COLLECTION_NAME"]
+        + "-"
+        + config_params["VECTORDB"]["EMBEDDING_MODEL_TYPE"], embedding_function=emb_fn
     )

@@ -4,7 +4,7 @@ import torch
 import logging
 
 logging.basicConfig(
-    filename="gliner.log", format="%(asctime)s %(message)s", filemode="a"
+    filename="gliner.log", format="%(asctime)s %(message)s", filemode="a",level=logging.INFO
 )
 
 with open("config.yaml") as stream:
