@@ -110,3 +110,7 @@ def scrape_main():
 
     save_naics(all_naics)
     driver.quit()
+
+
+if __name__ == "__main__":
+    scrape_main()

@@ -10,6 +10,7 @@ python = "^3.10"
 gliner = "^0.2.7"
 chromadb = "^0.5.3"
 sentence-transformers = "^3.0.1"
+mypy = "^1.10.1"
 
 
 [build-system]

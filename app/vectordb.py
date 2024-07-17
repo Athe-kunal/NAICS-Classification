@@ -11,9 +11,9 @@ from chromadb.utils.embedding_functions import (
     OpenAIEmbeddingFunction,
     SentenceTransformerEmbeddingFunction,
 )
-from dotenv import load_dotenv,find_dotenv
+from dotenv import load_dotenv, find_dotenv
 
-_ = load_dotenv(find_dotenv(),override=True)
+_ = load_dotenv(find_dotenv(), override=True)
 
 with open("config.yaml") as stream:
     try:
@@ -115,5 +115,6 @@ def load_database():
     return client.get_collection(
         name=config_params["VECTORDB"]["COLLECTION_NAME"]
         + "-"
-        + config_params["VECTORDB"]["EMBEDDING_MODEL_TYPE"], embedding_function=emb_fn
+        + config_params["VECTORDB"]["EMBEDDING_MODEL_TYPE"],
+        embedding_function=emb_fn,
     )
