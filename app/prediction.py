@@ -5,6 +5,14 @@ from app.vectordb import get_embedding_fn
 from functools import partial
 from typing import Tuple, List
 from dataclasses import dataclass
+import logging
+
+logging.basicConfig(
+    filename="prediction.log",
+    format="%(asctime)s %(message)s",
+    filemode="a",
+    level=logging.INFO,
+)
 
 @dataclass
 class QueryResult:
@@ -66,7 +74,6 @@ class Prediction(PredictionAbstract):
         assert (
             len(entities) >= 1
         ), "Expected atleast one entity. Try changing the threshold or the labels for better NER"
-
         ner_text_list = [entity["text"] for entity in entities]
         ner_entities_span = [(entity['start'],entity['end']) for entity in entities]
         ner_embeddings = self.emb_fn(ner_text_list)
@@ -86,6 +93,8 @@ class Prediction(PredictionAbstract):
                 query_embeddings=ner_embeddings,
                 n_results=n_results,
             )
+        
+        logging.info(f"Question: {question} Relevant docs: {relevant_docs}")
         
         industry_names_code = self._get_industry_names_code(relevant_docs)
 
